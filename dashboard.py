@@ -43,11 +43,13 @@ if uploaded_file is not None:
     
     # Sidebar for Body Fat Analysis
     st.sidebar.header('Settings for Body Fat Analysis')
-    selected_metrics_fat = st.sidebar.multiselect(
-        'Select metrics for Body Fat Analysis', 
-        options=['Body Fat(%)', 'Fat (kg)', '30-day MA Body Fat(%)', '90-day Exponential Smoothing Body Fat(%)', '30-day MA Fat (kg)', '90-day Exponential Smoothing Fat (kg)'],
-        default=['Body Fat(%)', '30-day MA Body Fat(%)', '90-day Exponential Smoothing Body Fat(%)']
-    )
+    body_fat_choice = st.sidebar.radio("Choose metric type", ['Percentage (%)', 'Kilograms (kg)'])
+
+    # Determine metrics for Body Fat Analysis based on user choice
+    if body_fat_choice == 'Percentage (%)':
+        selected_metrics_fat = ['Body Fat(%)', '30-day MA Body Fat(%)', '90-day Exponential Smoothing Body Fat(%)']
+    else:
+        selected_metrics_fat = ['Fat (kg)', '30-day MA Fat (kg)', '90-day Exponential Smoothing Fat (kg)']
 
     # Main Body Fat Analysis
     st.header('Body Fat Analysis')
@@ -59,12 +61,26 @@ if uploaded_file is not None:
             fig_fat.add_trace(go.Scatter(x=df['Time of Measurement'], y=df[metric], mode='lines', name=metric))
     fig_fat.update_layout(xaxis_title="Date", height=600)
     st.plotly_chart(fig_fat)
+
+    # Sidebar for General Analysis
+    st.sidebar.header('Settings for General Analysis')
+    all_metrics = ['Weight(kg)', 'Fat (kg)', 'Body Fat(%)', 'BMI', '30-day MA Weight', '90-day Exponential Smoothing Weight', '30-day MA Body Fat(%)', '90-day Exponential Smoothing Body Fat(%)', '30-day MA Fat (kg)', '90-day Exponential Smoothing Fat (kg)']
+    selected_metrics_general = st.sidebar.multiselect('Select metrics for General Analysis', options=all_metrics, default=['BMI'])
+
+    # Main General Analysis
+    st.header('General Analysis')
+    fig_general = go.Figure()
+    for metric in selected_metrics_general:
+        if metric in ['Weight(kg)', 'Fat (kg)', 'Body Fat(%)', 'BMI']:
+            fig_general.add_trace(go.Scatter(x=df['Time of Measurement'], y=df[metric], mode='markers', opacity=0.5, name=metric))
+        else:
+            fig_general.add_trace(go.Scatter(x=df['Time of Measurement'], y=df[metric], mode='lines', name=metric))
+    fig_general.update_layout(xaxis_title="Date", height=600)
+    st.plotly_chart(fig_general)
     
 else:
     st.write("Please upload a CSV file to proceed.")
 
 if __name__ == '__main__':
     pass
-
-
-
+"""
