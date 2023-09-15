@@ -89,10 +89,6 @@ if uploaded_file is not None:
                    'Muscle Mass(kg)', 'Bone Mass(kg)', 'Protein(%)', 'BMR(kcal)', 'Metabolic Age']
     selected_metrics_general = st.sidebar.multiselect('Select metrics for General Analysis', options=raw_metrics, default=['BMI'])
 
-    # Automatically generate and add moving averages for all selected metrics in General Analysis
-    df = generate_ma_refactored(df, selected_metrics_general)
-    for metric in selected_metrics_general:
-        selected_metrics_general.extend([f'30-day MA {metric}', f'90-day Exponential Smoothing {metric}'])
 
     # Main General Analysis
     st.header('General Analysis')
