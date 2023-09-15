@@ -14,7 +14,6 @@ def load_data(uploaded_file):
     df['90-day Exponential Smoothing Body Fat(%)'] = df['Body Fat(%)'].ewm(span=90).mean()
     df['30-day MA Fat (kg)'] = df['Fat (kg)'].rolling(window=30).mean()
     df['90-day Exponential Smoothing Fat (kg)'] = df['Fat (kg)'].ewm(span=90).mean()
-    df
     return df
 
 # Generate moving averages dynamically for each metric
