@@ -16,6 +16,13 @@ def load_data(uploaded_file):
     df['90-day Exponential Smoothing Fat (kg)'] = df['Fat (kg)'].ewm(span=90).mean()
     return df
 
+# Generate moving averages dynamically for each metric
+def generate_ma(df, metric):
+    df[f'30-day MA {metric}'] = df[metric].rolling(window=30).mean()
+    df[f'90-day Exponential Smoothing {metric}'] = df[metric].ewm(span=90).mean()
+    return df
+
+
 st.title('Weight and Health Stats Analysis')
 uploaded_file = st.sidebar.file_uploader("Choose a CSV file", type="csv")
 if uploaded_file is not None:
@@ -67,11 +74,6 @@ if uploaded_file is not None:
     'Body Fat(%)': ['30-day MA Body Fat(%)', '90-day Exponential Smoothing Body Fat(%)']
 }
 
-# Generate moving averages dynamically for each metric
-def generate_ma(df, metric):
-    df[f'30-day MA {metric}'] = df[metric].rolling(window=30).mean()
-    df[f'90-day Exponential Smoothing {metric}'] = df[metric].ewm(span=90).mean()
-    return df
 
 # Adjust the General Analysis section to automatically add moving averages for all selected metrics
     # Sidebar for General Analysis
