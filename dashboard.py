@@ -125,21 +125,21 @@ if uploaded_file is not None:
 
 
 
-st.title('Body Fat Loss Calculator')
+    st.title('Body Fat Loss Calculator')
 
-# Extract the last values
-current_weight = df['Weight(kg)'].iloc[-1]
-current_bf_percentage = df['Body Fat(%)'].iloc[-1]
+    # Extract the last values
+    current_weight = df['Weight(kg)'].iloc[-1]
+    current_bf_percentage = df['Body Fat(%)'].iloc[-1]
 
-st.write(f"Using last recorded weight: **{current_weight}kg** with body fat of **{current_bf_percentage}%**.")
+    st.write(f"Using last recorded weight: **{current_weight}kg** with body fat of **{current_bf_percentage}%**.")
 
-# User input for target
-target_bf_percentage = st.slider("Enter your target body fat percentage:", min_value=1, max_value=50, value=15, step=1)
+    # User input for target
+    target_bf_percentage = st.slider("Enter your target body fat percentage:", min_value=1, max_value=50, value=15, step=1)
 
-# Calculate and display result
-if st.button('Calculate'):
-    fat_to_lose = calculate_fat_loss(current_weight, current_bf_percentage, target_bf_percentage)
-    st.write(f"To reach a body fat percentage of {target_bf_percentage}%, you need to lose approximately **{fat_to_lose:.2f} kg**.")
+    # Calculate and display result
+    if st.button('Calculate'):
+        fat_to_lose = calculate_fat_loss(current_weight, current_bf_percentage, target_bf_percentage)
+        st.write(f"To reach a body fat percentage of {target_bf_percentage}%, you need to lose approximately **{fat_to_lose:.2f} kg**.")
 
     
 else:
