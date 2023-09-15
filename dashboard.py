@@ -43,7 +43,7 @@ if uploaded_file is not None:
     
     # Sidebar for Body Fat Analysis
     st.sidebar.header('Settings for Body Fat Analysis')
-    body_fat_choice = st.sidebar.radio("Choose metric type", ['Percentage (%)', 'Kilograms (kg)'])
+    body_fat_choice = st.sidebar.radio("Choose metric type for Body Fat Analysis", ['Percentage (%)', 'Kilograms (kg)'])
 
     # Determine metrics for Body Fat Analysis based on user choice
     if body_fat_choice == 'Percentage (%)':
@@ -64,8 +64,18 @@ if uploaded_file is not None:
 
     # Sidebar for General Analysis
     st.sidebar.header('Settings for General Analysis')
+    general_choice = st.sidebar.radio("Choose metric type for General Analysis", ['All metrics', 'Percentage (%)', 'Kilograms (kg)'])
+    
+    # Determine metrics for General Analysis based on user choice
     all_metrics = ['Weight(kg)', 'Fat (kg)', 'Body Fat(%)', 'BMI', '30-day MA Weight', '90-day Exponential Smoothing Weight', '30-day MA Body Fat(%)', '90-day Exponential Smoothing Body Fat(%)', '30-day MA Fat (kg)', '90-day Exponential Smoothing Fat (kg)']
-    selected_metrics_general = st.sidebar.multiselect('Select metrics for General Analysis', options=all_metrics, default=['BMI'])
+    if general_choice == 'Percentage (%)':
+        available_metrics = ['Body Fat(%)', '30-day MA Body Fat(%)', '90-day Exponential Smoothing Body Fat(%)']
+    elif general_choice == 'Kilograms (kg)':
+        available_metrics = ['Weight(kg)', 'Fat (kg)', '30-day MA Weight', '90-day Exponential Smoothing Weight', '30-day MA Fat (kg)', '90-day Exponential Smoothing Fat (kg)']
+    else:
+        available_metrics = all_metrics
+
+    selected_metrics_general = st.sidebar.multiselect('Select metrics for General Analysis', options=available_metrics, default=['BMI'])
 
     # Main General Analysis
     st.header('General Analysis')
