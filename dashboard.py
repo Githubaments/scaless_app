@@ -61,7 +61,11 @@ if uploaded_file is not None:
     fig_fat.update_layout(xaxis_title="Date", height=600)
     st.plotly_chart(fig_fat)
 
-
+    ma_mappings_extended = {
+    'Weight(kg)': ['30-day MA Weight', '90-day Exponential Smoothing Weight'],
+    'Fat (kg)': ['30-day MA Fat (kg)', '90-day Exponential Smoothing Fat (kg)'],
+    'Body Fat(%)': ['30-day MA Body Fat(%)', '90-day Exponential Smoothing Body Fat(%)']
+}
 
     # Sidebar for General Analysis
     st.sidebar.header('Settings for General Analysis')
