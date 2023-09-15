@@ -82,21 +82,24 @@ if uploaded_file is not None:
 }
 
 
-# Sidebar for General Analysis
     st.sidebar.header('Settings for General Analysis')
     raw_metrics = ['Weight(kg)', 'Fat (kg)', 'BMI', 'Body Fat(%)', 'Fat-free Body Weight(kg)', 
                    'Subcutaneous Fat(%)', 'Visceral Fat', 'Body Water(%)', 'Skeletal Muscle(%)', 
                    'Muscle Mass(kg)', 'Bone Mass(kg)', 'Protein(%)', 'BMR(kcal)', 'Metabolic Age']
     selected_metrics_general = st.sidebar.multiselect('Select metrics for General Analysis', options=raw_metrics, default=['BMI'])
 
-    #
+    # Generate moving averages for the selected metrics and add them to the list of metrics to plot
     mas = []
     for metric in selected_metrics_general:
-        df[f'30-day MA {metric}'] = df[metric].rolling(window=30).mean()
-        df[f'90-day Exponential Smoothing {metric}'] = df[metric].ewm(span=90).mean()
-        mas.append([df[f'90-day Exponential Smoothing {metric}'],df[f'30-day MA {metric}']])
-    #
-    selected_metrics_general = selected_metrics_general + mas
+        ma_30 = f'30-day MA {metric}'
+        ma_90 = f'90-day Exponential Smoothing {metric}'
+        
+        df[ma_30] = df[metric].rolling(window=30).mean()
+        df[ma_90] = df[metric].ewm(span=90).mean()
+        
+        mas.extend([ma_30, ma_90])
+    
+    selected_metrics_general += mas
 
     # Main General Analysis
     st.header('General Analysis')
