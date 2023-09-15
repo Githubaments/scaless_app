@@ -62,17 +62,7 @@ if uploaded_file is not None:
     st.plotly_chart(fig_fat)
 
 
-    # Sidebar for General Analysis
-   # Adjusting the script to add moving averages for the selected metrics in "General Analysis" section
 
-# Define the mappings for metrics that have moving averages
-ma_mappings_extended = {
-    'Weight(kg)': ['30-day MA Weight', '90-day Exponential Smoothing Weight'],
-    'Fat (kg)': ['30-day MA Fat (kg)', '90-day Exponential Smoothing Fat (kg)'],
-    'Body Fat(%)': ['30-day MA Body Fat(%)', '90-day Exponential Smoothing Body Fat(%)']
-}
-
-# Adjust the General Analysis section to automatically add moving averages for selected metrics
     # Sidebar for General Analysis
     st.sidebar.header('Settings for General Analysis')
     raw_metrics = ['Weight(kg)', 'Fat (kg)', 'BMI', 'Body Fat(%)', 'Fat-free Body Weight(kg)', 
