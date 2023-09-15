@@ -63,6 +63,18 @@ if uploaded_file is not None:
 
 
     # Sidebar for General Analysis
+   # Adjusting the script to add moving averages for the selected metrics in "General Analysis" section
+
+# Define the mappings for metrics that have moving averages
+ma_mappings_extended = {
+    'Weight(kg)': ['30-day MA Weight', '90-day Exponential Smoothing Weight'],
+    'Fat (kg)': ['30-day MA Fat (kg)', '90-day Exponential Smoothing Fat (kg)'],
+    'Body Fat(%)': ['30-day MA Body Fat(%)', '90-day Exponential Smoothing Body Fat(%)']
+}
+
+# Adjust the General Analysis section to automatically add moving averages for selected metrics
+part3_updated_ma_script = """
+    # Sidebar for General Analysis
     st.sidebar.header('Settings for General Analysis')
     raw_metrics = ['Weight(kg)', 'Fat (kg)', 'BMI', 'Body Fat(%)', 'Fat-free Body Weight(kg)', 
                    'Subcutaneous Fat(%)', 'Visceral Fat', 'Body Water(%)', 'Skeletal Muscle(%)', 
@@ -70,14 +82,9 @@ if uploaded_file is not None:
     selected_metrics_general = st.sidebar.multiselect('Select metrics for General Analysis', options=raw_metrics, default=['BMI'])
 
     # Automatically add moving averages for selected metrics in General Analysis
-    ma_mappings = {
-        'Weight(kg)': ['30-day MA Weight', '90-day Exponential Smoothing Weight'],
-        'Fat (kg)': ['30-day MA Fat (kg)', '90-day Exponential Smoothing Fat (kg)'],
-        'Body Fat(%)': ['30-day MA Body Fat(%)', '90-day Exponential Smoothing Body Fat(%)']
-    }
     for metric in selected_metrics_general:
-        if metric in ma_mappings:
-            selected_metrics_general.extend(ma_mappings[metric])
+        if metric in ma_mappings_extended:
+            selected_metrics_general.extend(ma_mappings_extended[metric])
 
     # Main General Analysis
     st.header('General Analysis')
@@ -95,4 +102,3 @@ else:
 
 if __name__ == '__main__':
     pass
-
