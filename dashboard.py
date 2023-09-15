@@ -74,7 +74,6 @@ def generate_ma(df, metric):
     return df
 
 # Adjust the General Analysis section to automatically add moving averages for all selected metrics
-part3_all_ma_script = """
     # Sidebar for General Analysis
     st.sidebar.header('Settings for General Analysis')
     raw_metrics = ['Weight(kg)', 'Fat (kg)', 'BMI', 'Body Fat(%)', 'Fat-free Body Weight(kg)', 
