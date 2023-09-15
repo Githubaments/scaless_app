@@ -94,7 +94,7 @@ if uploaded_file is not None:
     for metric in selected_metrics_general:
         df[f'30-day MA {metric}'] = df[metric].rolling(window=30).mean()
         df[f'90-day Exponential Smoothing {metric}'] = df[metric].ewm(span=90).mean()
-        mas.append(df[f'90-day Exponential Smoothing {metric}'],df[f'30-day MA {metric}'])
+        mas.append([df[f'90-day Exponential Smoothing {metric}'],df[f'30-day MA {metric}']])
     #
     selected_metrics_general = selected_metrics_general + mas
 
