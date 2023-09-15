@@ -31,6 +31,12 @@ def generate_ma_refactored(df, metrics):
         df[col_name] = col_data
     
     return df
+def calculate_fat_loss(current_weight, current_bf_percentage, target_bf_percentage):
+    body_fat_mass = current_weight * (current_bf_percentage / 100)
+    lbm = current_weight - body_fat_mass
+    goal_weight = lbm / (1 - target_bf_percentage / 100)
+    weight_to_lose = current_weight - goal_weight
+    return weight_to_lose
 
 
 st.title('Weight and Health Stats Analysis')
@@ -114,6 +120,27 @@ if uploaded_file is not None:
             fig_general.add_trace(go.Scatter(x=df['Time of Measurement'], y=df[metric], mode='lines', name=metric))
     fig_general.update_layout(xaxis_title="Date", height=600)
     st.plotly_chart(fig_general)
+
+
+
+
+
+st.title('Body Fat Loss Calculator')
+
+# Extract the last values
+current_weight = df['Weight(kg)'].iloc[-1]
+current_bf_percentage = df['Body Fat(%)'].iloc[-1]
+
+st.write(f"Using last recorded weight: **{current_weight}kg** with body fat of **{current_bf_percentage}%**.")
+
+# User input for target
+target_bf_percentage = st.slider("Enter your target body fat percentage:", min_value=1, max_value=50, value=15, step=1)
+
+# Calculate and display result
+if st.button('Calculate'):
+    fat_to_lose = calculate_fat_loss(current_weight, current_bf_percentage, target_bf_percentage)
+    st.write(f"To reach a body fat percentage of {target_bf_percentage}%, you need to lose approximately **{fat_to_lose:.2f} kg**.")
+
     
 else:
     st.write("Please upload a CSV file to proceed.")
