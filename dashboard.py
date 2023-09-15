@@ -61,7 +61,4 @@ else:
 
 if __name__ == '__main__':
     pass
-"""
 
-# Display the enhanced script
-enhanced_script
