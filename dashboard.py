@@ -73,7 +73,6 @@ ma_mappings_extended = {
 }
 
 # Adjust the General Analysis section to automatically add moving averages for selected metrics
-part3_updated_ma_script = """
     # Sidebar for General Analysis
     st.sidebar.header('Settings for General Analysis')
     raw_metrics = ['Weight(kg)', 'Fat (kg)', 'BMI', 'Body Fat(%)', 'Fat-free Body Weight(kg)', 
