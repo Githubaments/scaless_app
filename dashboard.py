@@ -89,6 +89,14 @@ if uploaded_file is not None:
                    'Muscle Mass(kg)', 'Bone Mass(kg)', 'Protein(%)', 'BMR(kcal)', 'Metabolic Age']
     selected_metrics_general = st.sidebar.multiselect('Select metrics for General Analysis', options=raw_metrics, default=['BMI'])
 
+    #
+    mas = []
+    for metric in selected_metrics_general:
+        df[f'30-day MA {metric}'] = df[metric].rolling(window=30).mean()
+        df[f'90-day Exponential Smoothing {metric}'] = df[metric].ewm(span=90).mean()
+        mas.append(df[f'90-day Exponential Smoothing {metric}'],df[f'30-day MA {metric}'])
+    #
+    selected_metrics_general = selected_metrics_general + mas
 
     # Main General Analysis
     st.header('General Analysis')
