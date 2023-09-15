@@ -17,9 +17,16 @@ def load_data(uploaded_file):
     return df
 
 # Generate moving averages dynamically for each metric
-def generate_ma(df, metric):
-    df[f'30-day MA {metric}'] = df[metric].rolling(window=30).mean()
-    df[f'90-day Exponential Smoothing {metric}'] = df[metric].ewm(span=90).mean()
+def generate_ma_refactored(df, metrics):
+    new_columns = {}
+    for metric in metrics:
+        new_columns[f'30-day MA {metric}'] = df[metric].rolling(window=30).mean()
+        new_columns[f'90-day Exponential Smoothing {metric}'] = df[metric].ewm(span=90).mean()
+    
+    # Joining all new columns to the original DataFrame
+    for col_name, col_data in new_columns.items():
+        df[col_name] = col_data
+    
     return df
 
 
@@ -75,8 +82,7 @@ if uploaded_file is not None:
 }
 
 
-# Adjust the General Analysis section to automatically add moving averages for all selected metrics
-    # Sidebar for General Analysis
+# Sidebar for General Analysis
     st.sidebar.header('Settings for General Analysis')
     raw_metrics = ['Weight(kg)', 'Fat (kg)', 'BMI', 'Body Fat(%)', 'Fat-free Body Weight(kg)', 
                    'Subcutaneous Fat(%)', 'Visceral Fat', 'Body Water(%)', 'Skeletal Muscle(%)', 
@@ -84,8 +90,8 @@ if uploaded_file is not None:
     selected_metrics_general = st.sidebar.multiselect('Select metrics for General Analysis', options=raw_metrics, default=['BMI'])
 
     # Automatically generate and add moving averages for all selected metrics in General Analysis
+    df = generate_ma_refactored(df, selected_metrics_general)
     for metric in selected_metrics_general:
-        df = generate_ma(df, metric)
         selected_metrics_general.extend([f'30-day MA {metric}', f'90-day Exponential Smoothing {metric}'])
 
     # Main General Analysis
