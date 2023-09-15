@@ -6,8 +6,8 @@ import plotly.graph_objects as go
 # Load data
 def load_data(uploaded_file):
     df = pd.read_csv(uploaded_file)
-    df['Time of Measurement'] = df.columns[0]
-    df['Time of Measurement'] = pd.to_datetime(df['Time of Measurement'])
+    first_column_name = df.columns[0]
+    df[first_column_name] = pd.to_datetime(df[first_column_name])
     df['Fat (kg)'] = (df['Body Fat(%)'] / 100) * df['Weight(kg)']
     df['30-day MA Weight'] = df['Weight(kg)'].rolling(window=30).mean()
     df['90-day Exponential Smoothing Weight'] = df['Weight(kg)'].ewm(span=90).mean()
