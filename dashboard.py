@@ -39,3 +39,60 @@ if uploaded_file is not None:
             fig_weight.add_trace(go.Scatter(x=df['Time of Measurement'], y=df[metric], mode='lines', name=metric))
     fig_weight.update_layout(xaxis_title="Date", height=600)
     st.plotly_chart(fig_weight)
+
+    # Sidebar for Body Fat Analysis
+    st.sidebar.header('Settings for Body Fat Analysis')
+    body_fat_choice = st.sidebar.radio("Choose metric type for Body Fat Analysis", ['Percentage (%)', 'Kilograms (kg)'])
+
+    # Determine metrics for Body Fat Analysis based on user choice
+    if body_fat_choice == 'Percentage (%)':
+        selected_metrics_fat = ['Body Fat(%)', '30-day MA Body Fat(%)', '90-day Exponential Smoothing Body Fat(%)']
+    else:
+        selected_metrics_fat = ['Fat (kg)', '30-day MA Fat (kg)', '90-day Exponential Smoothing Fat (kg)']
+
+    # Main Body Fat Analysis
+    st.header('Body Fat Analysis')
+    fig_fat = go.Figure()
+    for metric in selected_metrics_fat:
+        if metric in ['Body Fat(%)', 'Fat (kg)']:
+            fig_fat.add_trace(go.Scatter(x=df['Time of Measurement'], y=df[metric], mode='markers', opacity=0.5, name=metric))
+        else:
+            fig_fat.add_trace(go.Scatter(x=df['Time of Measurement'], y=df[metric], mode='lines', name=metric))
+    fig_fat.update_layout(xaxis_title="Date", height=600)
+    st.plotly_chart(fig_fat)
+
+
+    # Sidebar for General Analysis
+    st.sidebar.header('Settings for General Analysis')
+    raw_metrics = ['Weight(kg)', 'Fat (kg)', 'BMI', 'Body Fat(%)', 'Fat-free Body Weight(kg)', 
+                   'Subcutaneous Fat(%)', 'Visceral Fat', 'Body Water(%)', 'Skeletal Muscle(%)', 
+                   'Muscle Mass(kg)', 'Bone Mass(kg)', 'Protein(%)', 'BMR(kcal)', 'Metabolic Age']
+    selected_metrics_general = st.sidebar.multiselect('Select metrics for General Analysis', options=raw_metrics, default=['BMI'])
+
+    # Automatically add moving averages for selected metrics in General Analysis
+    ma_mappings = {
+        'Weight(kg)': ['30-day MA Weight', '90-day Exponential Smoothing Weight'],
+        'Fat (kg)': ['30-day MA Fat (kg)', '90-day Exponential Smoothing Fat (kg)'],
+        'Body Fat(%)': ['30-day MA Body Fat(%)', '90-day Exponential Smoothing Body Fat(%)']
+    }
+    for metric in selected_metrics_general:
+        if metric in ma_mappings:
+            selected_metrics_general.extend(ma_mappings[metric])
+
+    # Main General Analysis
+    st.header('General Analysis')
+    fig_general = go.Figure()
+    for metric in selected_metrics_general:
+        if metric in raw_metrics:
+            fig_general.add_trace(go.Scatter(x=df['Time of Measurement'], y=df[metric], mode='markers', opacity=0.5, name=metric))
+        else:
+            fig_general.add_trace(go.Scatter(x=df['Time of Measurement'], y=df[metric], mode='lines', name=metric))
+    fig_general.update_layout(xaxis_title="Date", height=600)
+    st.plotly_chart(fig_general)
+    
+else:
+    st.write("Please upload a CSV file to proceed.")
+
+if __name__ == '__main__':
+    pass
+
