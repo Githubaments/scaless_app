@@ -146,11 +146,11 @@ if uploaded_file is not None:
     fat_difference = current_fat - highest_fat
     
     # Display the difference in 'Fat (kg)'
-    st.write(f"Difference in **Fat (kg)** between now and peak: **{-fat_difference:.2f} kg**")
+    st.write(f"Difference in **Fat (kg)** between now and peak: **{-fat_difference:.2f} kg**.")
     
     volume_lost = calculate_fat_volume(fat_difference)
     
-    st.write(f"This equates to a volume of approximately **{-volume_lost:.3f} m³** (or **{-volume_lost*1000:.0f} liters**).")
+    st.write(f"This equates to a volume of approximately **{-volume_lost*1000:.1f} liters**.")
 
     # User input for target
     target_bf_percentage = st.slider("Enter your target body fat percentage:", min_value=1, max_value=50, value=15, step=1)
@@ -162,7 +162,7 @@ if uploaded_file is not None:
         st.write(f"To reach a body fat percentage of {target_bf_percentage}%, you need to lose approximately **{fat_to_lose:.2f} kg**.")
 
         volume_to_lose = calculate_fat_volume(fat_to_lose)
-        st.write(f"This equates to a volume of approximately **{volume_to_lose:.3f} m³** (or **{volume_to_lose*1000:.0f} liters**).")
+        st.write(f"This equates to a volume of approximately **{volume_to_lose*1000:.1f} liters**.")
 
     
 else:
