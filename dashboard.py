@@ -146,7 +146,7 @@ if uploaded_file is not None:
     fat_difference = current_fat - highest_fat
     
     # Display the difference in 'Fat (kg)'
-    st.write(f"Difference in 'Fat (kg)' between now and highest value: {fat_difference:.2f}")
+    st.write(f"Difference in **Fat (kg)** between now and peak: **{-fat_difference:.2f} kg**")
     
     volume_lost = calculate_fat_volume(fat_difference)
     
