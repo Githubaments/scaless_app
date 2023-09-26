@@ -135,10 +135,21 @@ if uploaded_file is not None:
     current_bf_percentage = df['Body Fat(%)'].iloc[-1]
 
     st.write(f"Using last recorded weight: **{current_weight}kg** with body fat of **{current_bf_percentage}%**.")
+    # Calculate the difference in 'Fat (kg)'
+    current_fat = df['Fat (kg)'].iloc[-1]  # Assuming the latest value is at the end of the DataFrame
+    # First, sort the DataFrame by 'Fat (kg)' in descending order to get the highest value
+    df_sorted = df.sort_values(by='Fat (kg)', ascending=False)
 
+    # Get the highest 'Fat (kg)' value
+    highest_fat = df_sorted.iloc[0]['Fat (kg)']
+
+    fat_difference = current_fat - highest_fat
+    
     # Display the difference in 'Fat (kg)'
     st.write(f"Difference in 'Fat (kg)' between now and highest value: {fat_difference:.2f}")
+    
     volume_lost = calculate_fat_volume(fat_difference)
+    
     st.write(f"This equates to a volume of approximately **{-volume_lost:.3f} m³** (or **{-volume_lost*1000:.0f} liters**).")
 
     # User input for target
@@ -146,18 +157,6 @@ if uploaded_file is not None:
 
     # Calculate and display result
     if st.button('Calculate'):
-
-        # Calculate the difference in 'Fat (kg)'
-        current_fat = df['Fat (kg)'].iloc[-1]  # Assuming the latest value is at the end of the DataFrame
-
-        # Assuming you have a DataFrame named df with a 'Date' column and a 'Fat (kg)' column
-        # First, sort the DataFrame by 'Fat (kg)' in descending order to get the highest value
-        df_sorted = df.sort_values(by='Fat (kg)', ascending=False)
-
-        # Get the highest 'Fat (kg)' value
-        highest_fat = df_sorted.iloc[0]['Fat (kg)']
-
-        fat_difference = current_fat - highest_fat
 
         fat_to_lose = calculate_fat_loss(current_weight, current_bf_percentage, target_bf_percentage)
         st.write(f"To reach a body fat percentage of {target_bf_percentage}%, you need to lose approximately **{fat_to_lose:.2f} kg**.")
